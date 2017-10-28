@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="tw">
+<head>
+        <meta charset="utf-8" />
+        <title>TEA(a Tiny Encryption Algorithm) 介紹</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">資安筆記本 </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/jia-mi-yan-suan-fa.html">加密演算法</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/teaa-tiny-encryption-algorithm-jie-shao.html" rel="bookmark"
+           title="Permalink to TEA(a Tiny Encryption Algorithm) 介紹">TEA(a Tiny Encryption Algorithm) 介紹</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-10-10T16:00:00+08:00">
+                Published: 二 10 十月 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/qerter.html">Qerter</a>
+        </address>
+<p>In <a href="/category/jia-mi-yan-suan-fa.html">加密演算法</a>.</p>
+
+</footer><!-- /.post-info -->      <h1>TEA(a Tiny Encryption Algorithm) 介紹</h1>
+<p>TEA(a Tiny Encryption Algorithm)於1994年由劍橋大學David Wheeler與Roger Needham在Fast Software Encryption workshop提出，目的是提出在各種不同的主機上都能夠運作的加解密演算法，並且在各種程式語言(包含組合語言)都能實做，<a href="http://citeseer.ist.psu.edu/viewdoc/download;jsessionid=C08E8409ADF484095568965A1EBF3E5E?doi=10.1.1.45.281&amp;rep=rep1&amp;type=pdf">原文論文</a>中有附有C語言加密與解密的函式範例，摘錄如下。</p>
+<h3>TEA演算法原文論文附上的C語言版本的加密函式</h3>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">code</span> <span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="kt">long</span><span class="o">*</span> <span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> 
+    <span class="n">delta</span> <span class="o">=</span> <span class="mh">0x9e377b9</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/* basic cycle start */</span>
+    <span class="p">{</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">delta</span><span class="p">;</span>
+            <span class="n">y</span> <span class="o">+=</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="n">z</span> <span class="o">+</span> <span class="n">sum</span> <span class="o">^</span> <span class="p">(</span><span class="n">z</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="n">z</span> <span class="o">+=</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">^</span> <span class="n">y</span> <span class="o">+</span> <span class="n">sum</span> <span class="o">^</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span> 
+    <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>TEA演算法原文論文附上的C語言版本的解密函式</h3>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">decode</span> <span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="kt">long</span> <span class="o">*</span><span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span> <span class="n">sum</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">z</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mh">0x9e377b9</span><span class="p">;</span>
+    <span class="n">sum</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="o">--&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/* start cycle */</span>
+    <span class="p">{</span>
+        <span class="n">z</span><span class="o">-=</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">^</span> <span class="n">y</span>  <span class="o">+</span> <span class="n">sum</span> <span class="o">^</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+        <span class="n">y</span><span class="o">-=</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="n">z</span>  <span class="o">+</span> <span class="n">sum</span> <span class="o">^</span> <span class="p">(</span><span class="n">z</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">}</span> <span class="cm">/* end cycle */</span>
+</pre></div>
+
+
+<p>跟其他的加解密演算法比是不是較簡單清爽呢，沒有利用太多的數學式推導。delta 是黃金常數(golden number)，為0x9e377b9。n 是迴圈做的次數，TEA演算法作者建議為32次。key 大小設為128bits(等於16bytes)，每次加密64bits的數值。TEA演算法為對稱式加密演算法，故讀者會有加密函式<code>code()</code>與解密函式<code>decode()</code>都是相同步驟，只是執行順序不同的感覺。</p>
+<p>雖然TEA演算法已被證實有缺陷，本文仍希望讀者能夠透過這個小而巧、小而美的演算法，做為入門加解密程式的敲門磚，同時也能領略加解密程式的技巧與奧妙。</p>
+<p>本文章不詳細解釋該演算法實現的數學模型，僅把<code>code()</code>與<code>encode()</code>函式當成加解密的黑盒子，解釋Python程式語言如何實現TEA演算法。</p>
+<p>接下來賞析Github網站上moloch--開發者以Python程式語言撰寫的tea.py(原始碼連結<a href="https://github.com/moloch--/PyTEA/blob/master/tea.py">在此</a>)<em>註1</em>，此程式功能有檔案加解密，是日常生活中可以使用的小工具。</p>
+<p>閱讀這支程式，讀者不僅可了解如何使用Python實作TEA演算法，搭配Python argparse 模組撰寫CLI(Command Line Interface)的應用程式，成為日常可以使用的加解密工具。讀者需要有基本Python程式語言設計的背景。</p>
+<p>程式作者引用了4個Python Module(ctypes、random、string、hashlib)與2個函式(ord()、hex())，這幾個函式與模組不僅可在TEA加解密演算法實做，在實做其他加解密演算法時候，也同樣使用的到。</p>
+<p>接下來我們先從這些與加解密有關的基本模組與函式開始。</p>
+<p>註1：本文使用版本為<a href="https://github.com/moloch--/PyTEA/blob/66cb2d85dcceba1bd66e7646198ac575c7a7d11c/tea.py">2013/03/14 commit版本</a>，目前程式作者於2017年已有大幅度更新tea.py。</p>
+<h2>Python與加解密有關的模組與函式</h2>
+<h3>ctypes模組</h3>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">c_uint32</span>
+
+<span class="n">sumation</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="n">DELTA</span><span class="p">)</span>
+</pre></div>
+
+
+<p>首先，在數值的部分，程式作者使用了Python 內建的<strong>ctypes</strong>模組，僅引入<strong>c_uint32</strong>函式，根據Python 2原廠手冊<a href="https://docs.python.org/2/library/ctypes.html#fundamental-data-types">15.17.1.4</a>，Fundamental data types一節，c_uint32() 可對應至C語言unsigned int型別，要印出sumation的值，需要在變數後加上.value，例如：</p>
+<div class="highlight"><pre><span></span><span class="n">sumation</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="p">(</span><span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="mh">0x9e377b9</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="mi">165902265</span>
+</pre></div>
+
+
+<p>有人說加密演算法都是數學公式演算，故把所有輸入，不管是字串、圖片等，都轉型成數字，方便後續進行數學運算，也就理所當然了。</p>
+<h3>random與string模組</h3>
+<p>再者，加密程式部分需要產生亂數密碼，程式作者使用了<strong>random</strong>、<strong>string</strong>模組，也僅引入choice、ascii_letters、digits函式</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_letters</span><span class="p">,</span> <span class="n">digits</span>
+
+<span class="k">def</span> <span class="nf">random_chars</span> <span class="p">(</span><span class="n">nchars</span><span class="p">):</span>
+        <span class="n">chars</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nchars</span><span class="p">):</span>
+                <span class="n">chars</span> <span class="o">+=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">digits</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chars</span>
+</pre></div>
+
+
+<p>從choice函式內建的說明，表示此函式是從傳入的seq字串，亂數挑選並回傳1個字元出來，故程式作者定義的random_chars函式意義即為從英文大小寫字元與數字字元挑選nchars個字元出來(e.g., 4個)。</p>
+<div class="highlight"><pre><span></span>Help on method choice in module random:
+
+choice(self, seq) method of random.Random instance
+    Choose a random element from a non-empty sequence.
+</pre></div>
+
+
+<p>我們將整段函式貼到python直接執行，並帶入nchars參數，例如指定nchars = 4, nchars = 10，並觀察其結果。random_chars(4) 回傳結果為<strong>vb8t</strong>，random_chars(10)回傳結果為<strong>s59r4Q2K5V</strong>，在回傳的數字有發現重複的2個5，表示這是一個取出放回的亂數挑選結果，即是每個亂數字元的機率均相同。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_letters</span><span class="p">,</span> <span class="n">digits</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">random_chars</span> <span class="p">(</span><span class="n">nchars</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">chars</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nchars</span><span class="p">):</span>
+<span class="o">...</span>                 <span class="n">chars</span> <span class="o">+=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">digits</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">chars</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">random_chars</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="s1">&#39;vb8t&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">random_chars</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="s1">&#39;s59r4Q2K5V&#39;</span>
+</pre></div>
+
+
+<h3>getpass模組</h3>
+<p>程式引用Python 標準函式庫的<code>getpass</code>模組，<code>getpass.getpass</code>函式負責在螢幕輸出字串，通常是密碼提示字串，例如“請輸入密碼”:，使用者再從鍵盤敲入密碼，敲密碼的過程中，密碼不會輸出在螢幕上，以達到保密的效果。輸入的密碼就會回傳至<code>password</code>變數。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">getpass</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;請輸入密碼: &quot;</span><span class="p">)</span>
+<span class="err">請輸入密碼</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+<span class="n">test</span>
+</pre></div>
+
+
+<h3>hashlib模組</h3>
+<p>程式作者有使用<code>sha256()</code>函式，該函式是Python標準函式庫<code>hashlib</code>其中一個函式，簡單來說就是給指定輸入的字串，取得其sha256雜湊值。</p>
+<p>過程需要經過3個步驟，第1個步驟初始化<code>b = sha256()</code>，將b變數初始化成sha256 hash object，第2個步驟，輸入欲取得雜湊值的字串｀b.update('1234')，亦即欲取得雜湊值的字串為<code>1234</code>，第3個步驟計算雜湊值，<code>b.hexdigest()</code>。螢幕上就會輸出<code>03ac64...</code>一大串，就是1234字串的sha256的雜湊值了。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha256</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="s1">&#39;03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4&#39;</span>
+</pre></div>
+
+
+<p><code>sha256()</code>函式內建的說明，returns a sha256 hash object，表示<code>sha = sha256()</code>僅是做初始化，將<code>sha</code>變數初始化成sha256 hash object</p>
+<div class="highlight"><pre><span></span><span class="n">Help</span> <span class="n">on</span> <span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">openssl_sha256</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">_hashlib</span><span class="p">:</span>
+
+<span class="n">openssl_sha256</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">Returns</span> <span class="n">a</span> <span class="n">sha256</span> <span class="nb">hash</span> <span class="nb">object</span><span class="p">;</span> <span class="n">optionally</span> <span class="n">initialized</span> <span class="k">with</span> <span class="n">a</span> <span class="n">string</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">sha256</span> <span class="n">HASH</span> <span class="nb">object</span> <span class="err">@</span> <span class="mh">0x1075c1eb0</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h3>ord()與hex()函式</h3>
+<p><code>ord()</code>與<code>hex()</code>函式為Python標準函式庫內建的函式，使用該函式不需事先引入特定模組。<code>ord()</code>函式參數傳入1個英文字元，即回傳此字元的ascii code碼，例如<code>ord('A')</code> = 65，<code>ord('B')</code> = 66，<code>ord('a')</code> = 97，<code>ord('1')</code> = 47等等。前面多加入1個<code>hex()</code>函式即代表將<code>ord()</code>函式傳回的數字，再轉成16進位的數字。</p>
+<div class="highlight"><pre><span></span><span class="nb">ord</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">integer</span>
+
+    <span class="n">Return</span> <span class="n">the</span> <span class="n">integer</span> <span class="n">ordinal</span> <span class="n">of</span> <span class="n">a</span> <span class="n">one</span><span class="o">-</span><span class="n">character</span> <span class="n">string</span><span class="o">.</span>
+</pre></div>
+
+
+<p>實際到python console試看看<code>ord()</code>與<code>hex()</code>函式的運用吧！</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="mi">65</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">))</span>
+<span class="s1">&#39;0x41&#39;</span>
+</pre></div>
+
+
+<p>由於<code>hex()</code>函式輸出結果會多加上<strong>0x</strong>字眼，程式作者再利用<code>[2:]</code>表示式將<strong>0x</strong>字串去除</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span>
+<span class="s1">&#39;41&#39;</span>
+</pre></div>
+
+
+<h2>tea.py自定義函式</h2>
+<h3>to_c_array函式</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_c_array</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Converts a string to a list of c_uint32s &#39;&#39;&#39;</span>
+    <span class="n">c_array</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">char_array</span> <span class="o">=</span> <span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">char_array</span><span class="p">),</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">char_array</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">hex_value</span> <span class="o">=</span> <span class="s1">&#39;0x&#39;</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="n">c_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">c_array</span>
+</pre></div>
+
+
+<p><code>to_c_array()</code>算是裡面很巧妙的一個小函式，目的是為了將傳入的字串，4個字元一組，接續轉換成<strong>c_uint32</strong>型別的array，我們來逐一拆解這個函式的內容，從開始此函式第二行開始</p>
+<div class="highlight"><pre><span></span><span class="n">char_array</span> <span class="o">=</span> <span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+</pre></div>
+
+
+<p>這行寫法改寫成以下程式碼，會比較易讀</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">char_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">))[</span><span class="mi">2</span><span class="p">:])</span>
+</pre></div>
+
+
+<p>再回到一開始第二行程式碼，我們拿整段貼到python console試看看，若輸入的data 等於ABCD字串，則轉換成char_array(python list型別) 等於 ['41', '42', '43', '44']，要注意此list型別的每一item的內容均為<code>str</code>型別，是<code>'41'</code>，不是<code>41</code>。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;ABCD&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">char_array</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>         <span class="n">char_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">))[</span><span class="mi">2</span><span class="p">:])</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">char_array</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;41&#39;</span><span class="p">,</span> <span class="s1">&#39;42&#39;</span><span class="p">,</span> <span class="s1">&#39;43&#39;</span><span class="p">,</span> <span class="s1">&#39;44&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>接下來進到下面的for迴圈，依目前char_array 內容，<code>len(char_array)</code>為4，故
+<code>for index in range(0, len(char_array), 4)</code> 就等於 <code>for index in range(0, 4, 4)</code>，index = 0 開始，一次迴圈加4，最大值為4迴圈即停止。</p>
+<p><code>block = char_array[index:index + 4]</code></p>
+<ol>
+<li>若<code>data = 'ABCDEFGH'</code>，在第一個迴圈時，<code>block = char_array[0:4]</code>，<code>block = ['41', '42', '43', '44']</code>，<code>hex_value = '0x41424344'</code>。</li>
+<li>第二個迴圈時，<code>block = char_array[4:8]</code>，<code>block = ['45', '46', '47', '48']</code>，<code>hex_value = '0x45464748'</code>依此類推。</li>
+</ol>
+<div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">char_array</span><span class="p">),</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">char_array</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">hex_value</span> <span class="o">=</span> <span class="s1">&#39;0x&#39;</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="n">c_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">c_array</span>
+</pre></div>
+
+
+<p>要注意在迴圈裡<code>hex_value</code>變數一直都是字串(str)型別，透過<code>int()</code>與<code>c_uint32()</code>轉換後，才會變成真正的數值型別的變數。接下來這一行程式碼，我們先來拆解int(hex_value, 16)</p>
+<div class="highlight"><pre><span></span><span class="n">c_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
+</pre></div>
+
+
+<p>先把<code>hex_value</code>簡化成<code>'0x41'</code>，印出<code>int()</code>函式轉換後的結果為65，要注意是<strong>數值型別</strong>的65，不是字串型別的<code>'65'</code>。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">hex_value</span> <span class="o">=</span> <span class="s1">&#39;0x41&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">65</span>
+</pre></div>
+
+
+<p>再把<code>hex_value</code>換成<code>'0x41424344'</code>，印出後的結果為<code>1094861636</code>，其實就是16進位又轉成10進位。最後再加上<code>c_uint32()</code>函式，就變成<code>ctypes.c_uint型別</code>的變數了，要印出值，需要在變數後加上.value。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">hex_value</span> <span class="o">=</span> <span class="s1">&#39;0x41424344&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="mi">1094861636</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">ctypes</span><span class="o">.</span><span class="n">c_uint</span><span class="s1">&#39;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="mi">1094861636</span>
+</pre></div>
+
+
+<p>若<code>data = 'ABCDEFGH'</code>，最後<code>c_array</code>的值，append後的結果，就會變成<code>[1094861636, 1162233672]</code>，程式作者要4個bytes依序轉換成數值的陣列，目的就是為了方便後面的<code>c_array</code>value，進行TEA演算法計算時，一次可以加密64bits = 8bytes(前面4bytes, 後面4bytes)作業。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">c_array</span>
+<span class="p">[</span><span class="mi">1094861636</span><span class="p">,</span> <span class="mi">1162233672</span><span class="p">]</span>
+</pre></div>
+
+
+<h3>add_padding函式</h3>
+<p>由於資料加密是以4個bytes為一個單位，當不足4個bytes時，可以使用padding，將一些無意義的字元補在原本加密字串的後面。 add_padding函式有2個參數，第一個參數是data，也就是原本要加密的資料，第二個參數是verbose，詳細模式，預設是False。</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_padding</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="n">pad_delta</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Padding delta: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pad_delta</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">+=</span> <span class="n">random_chars</span><span class="p">(</span><span class="n">pad_delta</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">random_chars</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">pad_delta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+
+
+<p>先假設<code>data = 'ABCDE'</code>，故<code>len(data) = 5</code>， <code>5 % 4 = 1</code>，5除以4的餘數等於1，<code>4 - 1 = 3</code>，pad_delta 即等於 3，也就是欲加密的資料最後面要再補3個字元。</p>
+<div class="highlight"><pre><span></span><span class="n">pad_delta</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>data += ...</code> 把後面函式的結果，附加在data字串後面。<code>random_chars(pad_delta)</code>，例如結果為<code>JLM</code>，<code>data = 'ABCDEJLM'</code></p>
+<div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">+=</span> <span class="n">random_chars</span><span class="p">(</span><span class="n">pad_delta</span><span class="p">)</span>
+</pre></div>
+
+
+<p>但解密的時候要把padding字元拿掉，怎麼知道要拿掉多少字元，作者就在資料最後加上3個任意字元與pad_delta數字，就知道解密的時候要拿掉多少字元。例如3個任意字元為<code>QER</code>，pad_delta數字等於3，所以data附加後即等於<code>data = 'ABCDEJLMQER3'</code>，計算完後回傳。</p>
+<div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">random_chars</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">pad_delta</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>get_key函式</h3>
+<p>開一個被鎖上的門需要一把鑰匙，正如同加密檔案需要一組密碼，程式執行過程中get_key函式會請使用者輸入一組密碼，再將密碼保留給後面的函式使用。</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Generate a key based on user password &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="mi">0</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Password: &quot;</span><span class="p">)</span>
+    <span class="n">sha</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">()</span>
+    <span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&quot;Magic Static Salt&quot;</span><span class="p">)</span>
+    <span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">char</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[::</span><span class="mi">4</span><span class="p">]])</span>
+</pre></div>
+
+
+<p>第1、2行就是先測量password變數的字串長度(<code>len()</code>函式），如果為<code>0</code>，就執行<code>getpass.getpass()</code>，取得使用者密碼，第一次執行由於<code>password</code>變數尚未初始化，一定會等於<code>0</code>，<code>getpass</code>函式一定會執行，以取得使用者輸入的密碼。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="mi">0</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Password: &quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>程式作者使用<code>sha.update()</code>函式，將password變數與"Magic Static Salt"字串更新至sha變數，故程式作者想取得雜湊值的字串不僅是使用者輸入的自串，還在後面附上了"Magic Static Salt"字串。Salt字串目的是增加有心人士取得雜湊值後，提高使用彩虹表破解密碼的難度。從雜湊值無法直接反推算出密碼，彩虹表是預先計算好所有字串的雜湊值。直接查表就可以反查密碼。</p>
+<div class="highlight"><pre><span></span><span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&quot;Magic Static Salt&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>之後，程式作者還附加更新<code>sha.hexdigest()</code>至<code>sha</code>變數，執行2次<code>sha.update()</code>會發生什麼事情呢？</p>
+<div class="highlight"><pre><span></span><span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span>
+</pre></div>
+
+
+<p>使用｀help(sha)`看到Python原廠的說明，表示第二次後續呼叫update函式就會附加到原本輸入的字串後面，並更新其雜湊值。</p>
+<div class="highlight"><pre><span></span><span class="n">update</span><span class="p">()</span> <span class="o">--</span> <span class="n">updates</span> <span class="n">the</span> <span class="n">current</span> <span class="n">digest</span> <span class="k">with</span> <span class="n">an</span> <span class="n">additional</span> <span class="n">string</span>
+</pre></div>
+
+
+<p>這段很有意思，為了簡短所輸入的密碼的長度。因為密碼越長，加密速度越慢。sha256雜湊值總共有64個字元，<code>sha.hexdigest()[::4]</code>就是每4個字元取第1個字元，64個字元總共會取16個字元，例如<code>"12345678"[::4]</code>即等於<code>15</code>，將這16個字元取出後，以字串形式回傳。</p>
+<div class="highlight"><pre><span></span><span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">char</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[::</span><span class="mi">4</span><span class="p">]])</span>
+</pre></div>
+
+
+<h3>encryt_block函式</h3>
+<p>encrypt_blcok函式是此程式的核心加密函式，負責將輸入的明文與密碼，經計算轉換成密文，程式邏輯跟TEA原文論文附帶<code>code()</code>函式相同。</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encrypt_block</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Encrypt a single 64-bit block using a given key</span>
+<span class="sd">    @param block: list of two c_uint32s</span>
+<span class="sd">    @param key: list of four c_uint32s</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="n">BLOCK_SIZE</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">KEY_SIZE</span>
+    <span class="n">sumation</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="n">DELTA</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ROUNDS</span><span class="p">):</span>
+        <span class="n">sumation</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="n">delta</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">--&gt; Encrypting block round </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ROUNDS</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">block</span>
+</pre></div>
+
+
+<p>Size單位為32bits，<code>BLOCK_SIZE</code>設定為2，亦即64bits，<code>KEY_SIZE</code>設定為4，亦即128bits，由於block型別是list，故list的單一元素的單位c_uint32(其最大值為2^32-1=4294967296，為32bits)，文章前面有提到，進行TEA演算法計算時，一次可以加密64bits = 8bytes(前面4bytes, 後面4bytes)作業。這也是為什麼BLOCK_SIZE設定為2。在TEA演算法裡，KEY會拆成k[0]~k[3]分別運算，單一元素的單位也為c_uint32(32bits)，故KEY_SIZE=4。</p>
+<p>assert 描述則是用來判斷<code>len(block)</code>與<code>len(key)</code>大小是否等於<code>BLOCK_SIZE</code>與<code>KEY_SIZE</code>。程式執行至這行，若判斷式不成立，就會發出AssertionError，提醒使用者。</p>
+<div class="highlight"><pre><span></span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="n">BLOCK_SIZE</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">KEY_SIZE</span>
+</pre></div>
+
+
+<p>接下來這一段程式碼就是TEA演算法的加密函式核心，此段程式碼是從原作者的C語言函式，引入ctypes模組，翻譯而成Python寫法。此段程式運算的基本單位均是c_uint32(32bits)。</p>
+<p><code>sumation</code>等於0，<code>delta</code>等於0x9e3779b9，<code>ROUNDS</code>等於32，進入<code>for index in range(0, ROUNDS)</code>的迴圈，就開始了TEA演算法的DATA與KEY的數學運算。</p>
+<div class="highlight"><pre><span></span>    <span class="n">sumation</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="n">DELTA</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ROUNDS</span><span class="p">):</span>
+        <span class="n">sumation</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="n">delta</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>decrypt_block函式</h3>
+<p>decrypt_blcok函式是此程式的核心解密函式，負責將輸入的密文與密碼，經計算轉換成明文，程式邏輯跟TEA原文論文附帶<code>decode()</code>函式相同。</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decrypt_block</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Decrypt a single 64-bit block using a given key</span>
+<span class="sd">    @param block: list of two c_uint32s</span>
+<span class="sd">    @param key: list of four c_uint32s</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="n">BLOCK_SIZE</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">KEY_SIZE</span>
+    <span class="n">sumation</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="n">SUMATION</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">c_uint32</span><span class="p">(</span><span class="n">DELTA</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ROUNDS</span><span class="p">):</span>
+        <span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">-=</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">);</span>
+        <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">-=</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumation</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">);</span>
+        <span class="n">sumation</span><span class="o">.</span><span class="n">value</span> <span class="o">-=</span> <span class="n">delta</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&lt;-- Decrypting block round </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ROUNDS</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">block</span>
+</pre></div>
+
+
+<p>整段<code>decrypt_block()</code>函式邏輯與<code>encrypt_block()</code>函式邏輯很像，儘是依照原文論文的<code>decode()</code>函式，將需要的程序，使用ctype模組與四則運算實現，sumation與delta變數的建立也與<code>encrypt_block()</code>函式相同，在此便不再贅述。</p>
+<h3>to_string函式</h3>
+<p>作者直接在這段函式下了註解「Converts a list of c_uint32s to a Python (ascii) string」，對這段函式的功能做了最好的說明，亦即將c_uint32類型的list轉換成ascii字串。</p>
+<p>先來準備要傳入的<code>c_array</code>字串(型別為c_uint32)，我們透過以下的程式碼，讓<code>c_array =  [c_uint(1094861636L), c_uint(1162233672L)]</code>，以便傳入<code>to_string</code>函式，測試其功能。預期函式會傳回<code>ABCDEFGH</code>的結果</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">c_array</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;0x41424344&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span> <span class="c1"># 0x41424344 = &#39;ABCD&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_uint32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;0x45464748&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span> <span class="c1"># 0x45464748 = &#39;EFGH&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">c_array</span><span class="p">)</span>
+<span class="p">[</span><span class="n">c_uint</span><span class="p">(</span><span class="il">1094861636L</span><span class="p">),</span> <span class="n">c_uint</span><span class="p">(</span><span class="il">1162233672L</span><span class="p">)]</span>
+</pre></div>
+
+
+<p>接下來將整段to_string函式貼到python裡，並使用<code>print(to_string(c_array))</code>語法進行測試，結果即輸出<code>ABCDEFGH</code>，與我們預期的相同。</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="n">c_array</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s1">&#39;&#39;&#39; Converts a list of c_uint32s to a Python (ascii) string &#39;&#39;&#39;</span>
+<span class="o">...</span>     <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">c_array</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">hex_string</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">hex_string</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span><span class="o">+</span><span class="n">hex_string</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_string</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+<span class="o">...</span>             <span class="n">byte</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s1">&#39;0x</span><span class="si">%02s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hex_string</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">output</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">output</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">to_string</span><span class="p">(</span><span class="n">c_array</span><span class="p">))</span>
+<span class="n">ABCDEFGH</span>
+</pre></div>
+
+
+<p>接下來，逐行來解析。透過for迴圈，程式將<code>c_array</code>裡的元素逐一分配給<code>block</code>變數進行處理。</p>
+<p>進入for迴圈裡，首先是第一個元素(<code>c_uint(1094861636L)</code>，經過hex()函式轉換，並去除<code>0x</code>字串([2:-1]，<code>hex_string</code>即等於<code>41424344</code></p>
+<div class="highlight"><pre><span></span><span class="n">hex_string</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+
+<p>測試<code>hex_string</code>字串長度不等於8時，會在字串開始時，補上<code>0</code>。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+    <span class="n">hex_string</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span><span class="o">+</span><span class="n">hex_string</span>
+</pre></div>
+
+
+<p>再透過這個迴圈，hex_string每2個字元(e.g., 41)，就轉換成byte，<code>byte = int ('0x02s' % 41, 16)</code>， <code>byte = 65</code> 。<code>chr(byte) = 'A'</code>，再將A附加到output字串後面。迴圈直到hex_string字元均轉換完畢為止。</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_string</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">byte</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s1">&#39;0x</span><span class="si">%02s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hex_string</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>encrypt函式</h3>
+<p>encrypt函式就把它想成是程式裡的身體軀幹，身體裡面有包含五臟六腑，例如前文提到的<code>add_padding()</code>、<code>to_c_array()</code>、<code>encrypt_block()</code>、<code>to_string()</code>等函式。在程式裡扮演吃重的角色，程式作者針對此函式的註解為「Encrypt string using TEA algorithm with a given key」，意思是針對已經取得欲加密的資料(data)、加密的密鑰(key)材料，透過函式參數方式傳入，準備下鍋來煮一道TEA演算法的好菜。</p>
+<ol>
+<li>
+<p><code>data</code>變數首先經由<code>add_padding()</code>函式補齊給4整除的資料，並在最後4個byte加上3個亂數字元，與補齊幾個數字之字元(例如為2)。</p>
+</li>
+<li>
+<p><code>data</code>變數經<code>to_c_array()</code>函式，轉換成每個list元素均為<code>c_uint32</code>型態的list。</p>
+</li>
+<li>
+<p>key先經過ascii編碼(encode)後，再傳入<code>to_c_array()</code>函式，轉換成每個list元素均為<code>c_uint32</code>型態的list。</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">add_padding</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">to_c_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">to_c_array</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">))</span>
+</pre></div>
+
+
+<ol>
+<li>先宣告cipher_text的變數，其型態為list</li>
+<li>進入for迴圈，暫稱為index迴圈，index為0，每次迴圈加2，以data長度為迴圈終點</li>
+<li>將<code>data</code>變數每2個元素指派給block變數，準備給<code>encrypt_block()</code>使用(還記得encrypt_block()函式有宣告<code>BLOCK_SIZE = 2</code>嗎？)，所以才會每2個元素為一個block</li>
+<li>將<code>block</code>、<code>key</code>與<code>verbose</code>變數傳入<code>encrypt_block()</code>函式，進行加密</li>
+<li>加密後，<code>block</code>變數裡面存的已是加密後的數值。再透過一個for迴圈，將block裡面的值附加至<code>cipher_text</code>這個變數list裡面，因為下個index迴圈會覆寫<code>block</code>變數</li>
+<li>最後，再將<code>cipher_text</code>這個變數透過<code>to_string</code>變數回傳，將<code>cipher_text</code>list變數轉換成字串</li>
+</ol>
+<div class="highlight"><pre><span></span>        <span class="n">cipher_text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Encrypting block </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">index</span><span class="p">)</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">encrypt_block</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">uint</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+            <span class="n">cipher_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uint</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Encryption completed successfully&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">to_string</span><span class="p">(</span><span class="n">cipher_text</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>encrypt_file函式</h3>
+<p>encrypt_file函式可以說是encrypt函式的應用之一，其功能為將指定路徑的檔案使用TEA演算法加密。其他的應用讀者還可以想像一下，例如雙方使用socket透過網路加密通道傳輸檔案或實作具有加密通道的網路聊天室等。既然是encrypt_file，當然該函式免不了要與檔案操作有關。以下逐一說明<code>encrypt_file()</code>函式的程式執行步驟。</p>
+<ol>
+<li>第1行，開檔案(open)，將指定路徑的檔案(fpath)以讀取與寫入二進位檔案(rb+)權限讀入python，檔案指標分配給fp變數。</li>
+<li>第2行，將檔案全數讀出(fp.read())指定至data變數。</li>
+<li>第3行，將data、key傳入encrypt函式，並回傳cipher_text，表示cipher_text即為data內容以字串表示的加密結果。</li>
+<li>第4行，fp.seek(0)，表示搜尋至檔案的最開頭。</li>
+<li>第5行，fp.write(cipher_text)，將加密字串覆寫至原本的指定路徑檔案(fpath)。</li>
+<li>第6行，fp.close()，關閉檔案操作。</li>
+</ol>
+<p>透過此函式，可將指定路徑的檔案(fpath)使用TEA演算法加密其內容後，覆寫回去，達成檔案加密之結果。</p>
+<div class="highlight"><pre><span></span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="s1">&#39;rb+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">cipher_text</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cipher_text</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>decrypt函式</h3>
+<p>同先前提到的<code>encrypt()</code>函式，為TEA演算法的核心解密函式。由於TEA演算法是對稱式加密演算法，<code>decrypt()</code>函式就是<code>encrypt()</code>函式所有使用方法，倒著做一次。以下逐一說明，<code>decrypt()</code>函式的程式執行步驟。</p>
+<ol>
+<li>第1行，先將<code>data</code>變數的內容，使用<code>to_c_array()</code>函式轉換成<code>c_uint32</code>格式的陣列表示，再覆寫回<code>data</code></li>
+<li>第2行，同理將<code>key</code>變數的內容轉換成<code>c_uint32</code>格式的陣列表示</li>
+<li>第3行，初始化之後會用的<code>plain_text</code>變數</li>
+<li>第4行，使用for迴圈每兩個陣列元素逐步迭代data變數的內容</li>
+<li>第5~6行，印出目前解密進度</li>
+<li>第7行，指定<code>block</code>變數為<code>data</code>變數之子陣列，陣列的元素隨著index變數與for迴圈的迭代逐步增加。</li>
+<li>第8行，使用<code>decrypt_block()</code>函式傳入block與key變數進行解密，解密完的資料傳回<code>decrypted_block</code>變數，</li>
+<li>第9~10行，decrypted_block變數型態是陣列，透過這2行的for迴圈逐一附加至<code>plain_text</code>變數</li>
+<li>第11行，將<code>plain_text</code>變數的內容使用<code>to_string()</code>函式轉換成字串型態，傳回<code>data</code>變數</li>
+<li>第12行，使用<code>remove_padding()</code>函式將先前padding的資料拿掉</li>
+<li>第13~14行，印出解密完成訊息</li>
+<li>第15行，將解密完成的data變數內容回傳，函式結束</li>
+</ol>
+<div class="highlight"><pre><span></span>    <span class="n">data</span> <span class="o">=</span> <span class="n">to_c_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">to_c_array</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">))</span>
+    <span class="n">plain_text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Encrypting block </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">index</span><span class="p">)</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">decrypted_block</span> <span class="o">=</span> <span class="n">decrypt_block</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">uint</span> <span class="ow">in</span> <span class="n">decrypted_block</span><span class="p">:</span>
+            <span class="n">plain_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uint</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">plain_text</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remove_padding</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">INFO</span> <span class="o">+</span> <span class="s2">&quot;Decryption compelted successfully&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+
+
+<h3>decrypt_file函式</h3>
+<p>decrypt_file函式就好像encrypt_file函式的兄弟，其功能為將指定路徑的檔案使用TEA演算法解密。該函式與檔案操作也有關。以下逐一說明<code>decrypt_file()</code>函式的程式執行步驟。</p>
+<ol>
+<li>第1行，開檔案(open)，將指定路徑的檔案(fpath)以讀取與寫入二進位檔案(rb+)權限讀入python，檔案指標分配給fp變數。</li>
+<li>第2行，將檔案全數讀出(fp.read())指定至data變數。</li>
+<li>第3行，將data、key傳入decrypt函式，並回傳plain_text，表示plain_text即為data內容以字串表示的解密結果。</li>
+<li>第4行，fp.close()，關閉檔案操作。</li>
+<li>第5行，再以寫入模式開檔(fpath)。</li>
+<li>第6行，fp.write(plain_text)，將解密字串覆寫至原本的指定fpath檔案</li>
+<li>第7行，fp.close()，關閉檔案操作。</li>
+</ol>
+<p>透過此函式，可將指定路徑的檔案(fpath)使用TEA演算法解密其內容後，覆寫回去，達成檔案解密之結果。</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decrypt_file</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="s1">&#39;rb+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">plain_text</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">plain_text</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>main函式</h3>
+<p><code>main()</code>函式主要處理使用者傳入的參數，邏輯上分成2部分，第一部分為建構ArgumentParser物件所需的參數與說明，第二部分為處理傳入的參數。</p>
+<p>第一部分程式原始碼:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Python implementation of the TEA cipher&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-e&#39;</span><span class="p">,</span> <span class="s1">&#39;--encrypt&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;encrypt a file&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;epath&#39;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--decrypt&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;decrypt a file&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;dpath&#39;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--verbose&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;display verbose output&#39;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;verbose&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>為建構ArgumentParser物件所需的參數與說明，建立<code>ArgumentPaser</code>的物件，名稱為<code>parser</code>，依序將程式所需的參數，利用<code>parser</code>物件的函數<code>add_argument()</code>，將<code>-e</code>、<code>-d</code>、<code>--verbose</code>這3個參數的說明(help)、目標變數(e.g, epath、dpath、verbose)，action(e.g, store_true)一一建立。</p>
+<p>第二部分程式原始碼:</p>
+<div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">epath</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">dpath</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Error: Must use --encrypt or --decrypt&#39;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">epath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Encrypt Mode: The file will be overwritten&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">epath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">epath</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">get_key</span><span class="p">()</span>
+        <span class="n">encrypt_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">epath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Error: target does not exist, or is not a file&#39;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">dpath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Decrypt Mode: The file will be overwritten&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dpath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dpath</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">get_key</span><span class="p">()</span>
+        <span class="n">decrypt_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dpath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Error: target does not exist, or is not a file&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>parser.parse_args()</code>該函式協助處理傳入的參數，並將處理好的結果傳回args變數，接下來利用if-elif條件判斷式，提醒使用者需要補充哪些資料，例如需要至少提供epath與dpath其中一個參數。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">epath</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">dpath</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Error: Must use --encrypt or --decrypt&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>假如<code>args.epath</code>有值，進入加密模式，並印出告警訊息，「加密模式：來源檔案可能遭覆寫」。</p>
+<div class="highlight"><pre><span></span><span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">epath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Encrypt Mode: The file will be overwritten&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">epath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">epath</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">get_key</span><span class="p">()</span>
+        <span class="n">encrypt_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">epath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Error: target does not exist, or is not a file&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>假如<code>args.dpath</code>有值，進入解密模式，並印出告警訊息，「解密模式：來源檔案可能遭覆寫」。</p>
+<div class="highlight"><pre><span></span><span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">dpath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Decrypt Mode: The file will be overwritten&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dpath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dpath</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">get_key</span><span class="p">()</span>
+        <span class="n">decrypt_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dpath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">WARN</span> <span class="o">+</span> <span class="s1">&#39;Error: target does not exist, or is not a file&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>總結</h2>
+<p>一開始也只是從書上得知有TEA演算法，便想說研究網路上是否有前輩以Python語言實做TEA演算法，感謝Github moloch--前輩撰寫易讀、優秀的tea.py程式碼，讓筆者一窺如何Python語言實做加解密演算法，這篇文章也是閱讀tea.py的筆記，花了10個月的時間，總算將tea.py的全部函式追過一遍，也撰寫了筆記，誕生此篇文章，希望此篇文章能幫助後續要入門Python語言實做加解密演算法的讀者。</p>
+<p>資訊路漫長，仍有許多可以學習的新知。筆者相信只有「專注」才能更瞭解資訊科學領域知識，從中窺探奧妙。</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
